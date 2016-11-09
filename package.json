@@ -9,7 +9,9 @@
   "dependencies": {
     "react": "15.3.2",
     "react-native": "0.36.1",
-    "react-native-ble": "^1.0.7"
+    "react-native-ble": "^1.0.7",
+    "react-native-mp-android-chart": "^0.1.1",
+    "react-native-pathjs-charts": "0.0.21"
   },
   "jest": {
     "preset": "jest-react-native"

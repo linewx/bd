@@ -13,101 +13,113 @@ import {
   PermissionsAndroid
 } from 'react-native';
 
-import noble from 'react-native-ble';
+import {LineChart} from 'react-native-mp-android-chart';
 
 class myproject extends Component {
-  render() {
-    return (
-      <View style={styles.container}>
-        <Text style={styles.welcome}>
-          Welcome to React Native!
-        </Text>
-        <Text style={styles.instructions}>
-          To get started, edit index.android.js
-        </Text>
-        <Text style={styles.instructions}>
-          Double tap R on your keyboard to reload,{'\n'}
-          Shake or press menu button for dev menu
-        </Text>
-      </View>
-    );
-  }
 
-  componentWillMount() {
-    noble.on('stateChange', this._onStateChange);
-    noble.on('discover', this._onDiscover);
-  }
+    render() {
+      return (
+        <View style={styles.container}>
+                <LineChart
+                  style={styles.chart}
+                  data={data}
+                  description={{text: ''}}
+                  legend={legend}
 
-  _onStateChange(state) {
-    if (state === 'poweredOn') {
-      const granted = PermissionsAndroid.requestPermission(
-                          PermissionsAndroid.PERMISSIONS.ACCESS_COARSE_LOCATION,
-                          {
-                            'title': 'bluetooth permission',
-                            'message': 'request bluetooth permission'
-                          }
-                        ).then(function(granted) {
-                            if (granted) {
-                                                        noble.startScanning();
-                                                      console.log("You can use the bluetooth")
-                                                    } else {
-                                                      console.log("bluetooth permission denied")
-                                                    }
-                        })
+                  drawGridBackground={false}
+                  borderColor={'teal'}
+                  borderWidth={1}
+                  drawBorders={true}
 
-    } else {
-      noble.stopScanning();
-    }
-  }
+                  touchEnabled={true}
+                  dragEnabled={true}
+                  scaleEnabled={true}
+                  scaleXEnabled={true}
+                  scaleYEnabled={true}
+                  pinchZoom={true}
+                  doubleTapToZoomEnabled={true}
 
-   _onDiscover(peripheral) {
-    console.log('peripheral discovered (' + peripheral.id +
-                ' with address <' + peripheral.address +  ', ' + peripheral.addressType + '>,' +
-                ' connectable ' + peripheral.connectable + ',' +
-                ' RSSI ' + peripheral.rssi + ':');
-    console.log('\thello my local name is:');
-    console.log('\t\t' + peripheral.advertisement.localName);
-    console.log('\tcan I interest you in any of the following advertised services:');
-    console.log('\t\t' + JSON.stringify(peripheral.advertisement.serviceUuids));
+                  dragDecelerationEnabled={true}
+                  dragDecelerationFrictionCoef={0.99}
 
-    var serviceData = peripheral.advertisement.serviceData;
-    if (serviceData && serviceData.length) {
-      console.log('\there is my service data:');
-      for (var i in serviceData) {
-        console.log('\t\t' + JSON.stringify(serviceData[i].uuid) + ': ' + JSON.stringify(serviceData[i].data.toString('hex')));
-      }
-    }
-    if (peripheral.advertisement.manufacturerData) {
-      console.log('\there is my manufacturer data:');
-      console.log('\t\t' + JSON.stringify(peripheral.advertisement.manufacturerData.toString('hex')));
-    }
-    if (peripheral.advertisement.txPowerLevel !== undefined) {
-      console.log('\tmy TX power level is:');
-      console.log('\t\t' + peripheral.advertisement.txPowerLevel);
+                  keepPositionOnRotation={false}
+                />
+              </View>
+      );
     }
 
-    console.log();
-  }
 }
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-    backgroundColor: '#F5FCFF',
+    backgroundColor: '#F5FCFF'
   },
-  welcome: {
-    fontSize: 20,
-    textAlign: 'center',
-    margin: 10,
-  },
-  instructions: {
-    textAlign: 'center',
-    color: '#333333',
-    marginBottom: 5,
-  },
+  chart: {
+    flex: 1
+  }
 });
 
-AppRegistry.registerComponent('myproject', () => myproject);
+const data =
+                       {
+                                  datasets: [{
+                                    yValues: [100, 110, 105, 115],
+                                    label: 'Company X',
+                                    config: {
+                                      lineWidth: 2,
+                                      drawCircles: false,
+                                      drawCubic: true,
+                                      highlightColor: 'red',
+                                      color: 'red',
+                                      drawFilled: true,
+                                      fillColor: 'red',
+                                      fillAlpha: 60,
+                                      dashedLine: {
+                                        lineLength: 20,
+                                        spaceLength: 20
+                                      }
+                                    }
+                                  }, {
+                                    yValues: [90, 130, 100, 105],
+                                    label: 'Company Y',
+                                    config: {
+                                      lineWidth: 1,
+                                      drawCubic: true,
+                                      drawCubicIntensity: 0.4,
+                                      circleRadius: 5,
+                                      drawHighlightIndicators: false,
+                                      color: 'blue',
+                                      drawFilled: true,
+                                      fillColor: 'blue',
+                                      fillAlpha: 45,
+                                      circleColor: 'blue'
+                                    }
+                                  }],
+                                  xValues: ['Q1', 'Q2', 'Q3', 'Q4']
+                                };
 
+
+const legend =   {
+                        enabled: true,
+                        textColor: 'blue',
+                        textSize: 12,
+                        position: 'BELOW_CHART_RIGHT',
+                        form: 'SQUARE',
+                        formSize: 14,
+                        xEntrySpace: 10,
+                        yEntrySpace: 5,
+                        formToTextSpace: 5,
+                        wordWrapEnabled: true,
+                        maxSizePercent: 0.5,
+                        fontFamily: 'monospace',
+                        fontStyle: 1,
+                        custom: {
+                          colors: ['red', 'blue'],
+                          labels: ['Company X', 'Company Y']
+                        }
+                      };
+
+
+
+
+AppRegistry.registerComponent('myproject', () => myproject);

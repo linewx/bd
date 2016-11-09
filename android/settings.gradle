@@ -1,5 +1,9 @@
 rootProject.name = 'myproject'
 
 include ':app'
+include ':react-native-mp-android-chart'
+project(':react-native-mp-android-chart').projectDir = new File(rootProject.projectDir, '../node_modules/react-native-mp-android-chart/android')
+include ':react-native-svg'
+project(':react-native-svg').projectDir = new File(rootProject.projectDir, '../node_modules/react-native-svg/android')
 include ':react-native-ble'
 project(':react-native-ble').projectDir = new File(rootProject.projectDir, '../node_modules/react-native-ble/android')
